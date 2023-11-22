@@ -110,7 +110,7 @@ if __name__ == '__main__':
     print("sample rate: {}".format(sr))
 
     # If stereo grab left
-    if sig.shape[0] != 1:
+    if sig.ndim != 1:
         sig = sig[0, :]
 
     acf = autocorr(sig)
