@@ -2,6 +2,7 @@
 Quick experiment to extract single wave cycles from a short audio file of a single (complex) note
 and write each to a new WAV file
 """
+import argparse
 import os.path
 import sys
 
@@ -9,8 +10,8 @@ import librosa
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
-from scipy.signal import find_peaks
 import soundfile as sf
+from scipy.signal import find_peaks
 
 
 def autocorr(x):
@@ -105,8 +106,10 @@ def plot_wav(audio_buffer, savefig_name=None):
 
 
 if __name__ == '__main__':
-    input_audio_path = sys.argv[1]
-    sig, sr = librosa.load(input_audio_path, sr=None, mono=False)
+    parser = argparse.ArgumentParser(description="path to download videos and max number")
+    parser.add_argument(dest='input_audio_path')
+    args = parser.parse_args()
+    sig, sr = librosa.load(args.input_audio_path, sr=None, mono=False)
     print("sample rate: {}".format(sr))
 
     # If stereo grab left
@@ -124,7 +127,7 @@ if __name__ == '__main__':
     # Snip original file at acf_autocorr_function peak points, which point are
     # principal periodicities in the original wave
     start_index = 0
-    basename, ext = os.path.splitext(os.path.basename(input_audio_path))
+    basename, ext = os.path.splitext(os.path.basename(args.input_audio_path))
     for end_index in acf_peaks:
         single_cycle_file_name = basename + "_" + str(start_index).zfill(5) + "_" + str(end_index).zfill(5) + ext
         sf.write(single_cycle_file_name,
