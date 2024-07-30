@@ -106,7 +106,7 @@ def plot_wav(audio_buffer, savefig_name=None):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="path to download videos and max number")
+    parser = argparse.ArgumentParser(description="input audio path")
     parser.add_argument(dest='input_audio_path')
     args = parser.parse_args()
     sig, sr = librosa.load(args.input_audio_path, sr=None, mono=False)
